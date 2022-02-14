@@ -22,6 +22,8 @@ def login_required(view):
 		if g.user is None:
 			return redirect (url_for ('login'))
 		return view(**kwargs)
+		
+	return wrapped_view
 
 
 @bp.before_app_request
@@ -31,8 +33,7 @@ def load_logged_in_user():
 	if user_id is None:
 		g.user = None
 	else:
-		g.user = get_db.execute('SELECT * FROM user WHERE id = ?', (user_id,)
-			.fetchone())
+		g.user = get_db().execute('SELECT * FROM user WHERE id = ?', (user_id,)).fetchone()
 
 
 @bp.route('/register', methods=('GET', 'POST'))

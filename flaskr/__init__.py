@@ -25,15 +25,23 @@ def create_app(test_config=None):
         pass
 
     # a simple page that says hello
-    @app.route('/')
     @app.route('/hello')
     def hello():
         return '<h1>Hello, World!</h1>'
 
     from flaskr import db
+
+
     db.init_app(app)
 
+
     from flaskr import auth
+    from flaskr import blog
+
+
     app.register_blueprint(auth.bp)
+    app.register_blueprint(blog.bp)
+
+    app.add_url_rule('/', endpoint='index')
 
     return app
